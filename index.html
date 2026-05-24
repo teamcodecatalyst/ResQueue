@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>SafeGrid Security Dashboard</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="flex sb card p15">
+
+        <div class="flex gap15">
+
+            <span class="font-w flex logo">
+                <span class="dot g-bg"></span>
+                SafeGrid
+            </span>
+
+            <span class="g-txt font-w flex">
+                <span class="dot g-bg blink"></span>
+                LIVE
+            </span>
+
+            <span id="clock" class="g-txt mono">
+                00:00:00
+            </span>
+
+        </div>
+
+        <div class="flex gap15 wrap-btn">
+
+            <button id="checkin-btn"
+                class="btn g-btn">
+
+                <i class="fa-solid fa-right-to-bracket"></i>
+
+                Check-In
+
+            </button>
+
+            <button id="checkout-btn"
+                class="btn o-btn">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Check-Out
+
+            </button>
+
+            <button id="sim-btn"
+                class="btn b-btn">
+
+                <i class="fa-solid fa-expand"></i>
+
+                Simulate Scan
+
+            </button>
+
+            <button id="danger-alert-btn"
+                class="btn r-btn">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                Declare Emergency
+
+            </button>
+
+        </div>
+
+    </header>
+
+    <!-- ================= GRID ================= -->
+
+    <div class="layout-grid">
+
+        <!-- ================= LEFT ================= -->
+
+        <div class="flex flex-col gap15">
+
+            <!-- SUMMARY -->
+
+            <div class="summary-grid">
+
+                <div class="card p15">
+
+                    <h5>TOTAL OCCUPANCY</h5>
+
+                    <h2 id="stat-total"
+                        class="g-txt d-font">
+
+                        247
+
+                    </h2>
+
+                    <p class="sub">
+
+                        of 500 max capacity ·
+
+                        <span id="stat-pct"
+                            class="g-txt">
+
+                            49%
+
+                        </span>
+
+                    </p>
+
+                </div>
+
+                <div class="card p15">
+
+                    <h5>ACTIVE FLOORS</h5>
+
+                    <h2 id="stat-active"
+                        class="b-txt d-font">
+
+                        9
+
+                    </h2>
+
+                    <p class="sub">
+
+                        12 total ·
+
+                        <span id="unoccupied-count">
+
+                            3
+
+                        </span>
+
+                        unoccupied
+
+                    </p>
+
+                </div>
+
+                <div class="card p15">
+
+                    <h5>CHECK-INS TODAY</h5>
+
+                    <h2 id="stat-today"
+                        class="o-txt d-font">
+
+                        1,284
+
+                    </h2>
+
+                </div>
+
+                <div class="card p15">
+
+                    <h5>EMERGENCY STATUS</h5>
+
+                    <h2 id="stat-status"
+                        class="g-txt d-font">
+
+                        ALL CLEAR
+
+                    </h2>
+
+                    <p class="sub"
+                        id="stat-status-sub">
+
+                        No active alerts
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- FLOOR OCCUPANCY -->
+
+            <section class="card">
+
+                <div class="flex sb m-b15">
+
+                    <h3>
+
+                        <i class="fa-solid fa-layer-group b-txt"></i>
+
+                        Floor-wise Occupancy
+
+                    </h3>
+
+                </div>
+
+                <div id="floor-list"
+                    class="flex flex-col gap10"></div>
+
+            </section>
+
+            <!-- FEED -->
+
+            <section class="card">
+
+                <div class="flex sb m-b15">
+
+                    <h3>
+
+                        <i class="fa-solid fa-list g-txt"></i>
+
+                        Activity Feed
+
+                    </h3>
+
+                    <button class="btn clear-btn"
+                        id="clear-feed-btn">
+
+                        Clear
+
+                    </button>
+
+                </div>
+
+                <div id="feed-list"
+                    class="feed-box"></div>
+
+            </section>
+
+        </div>
+
+        <!-- ================= RIGHT ================= -->
+
+        <div class="flex flex-col gap15">
+
+            <!-- QR -->
+
+            <section class="card">
+
+                <div class="flex sb m-b15">
+
+                    <h3>
+
+                        <i class="fa-solid fa-qrcode b-txt"></i>
+
+                        Floor QR Check-in Codes
+
+                    </h3>
+
+                </div>
+
+                <div id="qr-grid"
+                    class="qr-grid-box"></div>
+
+            </section>
+
+            <!-- EMERGENCY -->
+
+            <section class="card">
+
+                <div class="flex sb m-b15">
+
+                    <h3>
+
+                        <i class="fa-solid fa-square-poll-horizontal r-txt"></i>
+
+                        Emergency Response
+
+                    </h3>
+
+                    <span id="standby-pill"
+                        class="badge g-tag">
+
+                        <span class="dot g-bg"></span>
+
+                        Standby
+
+                    </span>
+
+                </div>
+
+                <div id="trigger-grid"
+                    class="trigger-grid-box"></div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+
+    <script type="module" src="script.js"></script>
+
+</body>
+
+</html>
