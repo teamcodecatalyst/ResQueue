@@ -744,6 +744,22 @@ function emergencyMode(alertObj){
         "#ef4444"
     );
 
+    // FLOOR BREAKDOWN
+
+    let floorBreakdown = floors.map(f => {
+
+        let status =
+        getFloorStatus(
+            f.count,
+            f.max
+        );
+
+        return `
+${f.name} : ${f.count}/${f.max} (${status.text})
+`;
+
+    }).join("\n");
+
     // EMAIL ALERT
 
     emailjs.send(
@@ -761,7 +777,10 @@ function emergencyMode(alertObj){
 
             timestamp:
             new Date()
-            .toLocaleString()
+            .toLocaleString(),
+
+            floor_breakdown:
+            floorBreakdown
         }
 
     );
@@ -770,7 +789,6 @@ function emergencyMode(alertObj){
         `${alertObj.name} Alert Sent`
     );
 }
-
 // ======================================================
 // BUTTON EVENTS
 // ======================================================
