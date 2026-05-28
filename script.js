@@ -8,8 +8,7 @@ import {
     set,
     update,
     onValue,
-    increment,
-    get
+    increment
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 // ======================================================
@@ -52,21 +51,21 @@ emailjs.init("4k-dOTrWlpJDJVGgK");
 
 const floors = [
 
-    { id:"gf", name:"GF", count:67, max:80 },
+    { id:"gf", name:"GF", count:0, max:80 },
 
-    { id:"mz", name:"MZ", count:12, max:30 },
+    { id:"mz", name:"MZ", count:0, max:30 },
 
-    { id:"f1", name:"F1", count:44, max:60 },
+    { id:"f1", name:"F1", count:0, max:60 },
 
-    { id:"f2", name:"F2", count:51, max:60 },
+    { id:"f2", name:"F2", count:0, max:60 },
 
-    { id:"f3", name:"F3", count:38, max:60 },
+    { id:"f3", name:"F3", count:0, max:60 },
 
-    { id:"f4", name:"F4", count:17, max:60 },
+    { id:"f4", name:"F4", count:0, max:60 },
 
-    { id:"f5", name:"F5", count:9, max:60 },
+    { id:"f5", name:"F5", count:0, max:60 },
 
-    { id:"f6", name:"F6", count:1, max:50 }
+    { id:"f6", name:"F6", count:0, max:50 }
 
 ];
 
@@ -523,30 +522,24 @@ function updateGlobalMetrics(){
 
 async function seedDatabase(){
 
-    const snapshot =
-    await get(ref(db,"floors"));
+    let data = {};
 
-    if(!snapshot.exists()){
+    floors.forEach(f => {
 
-        let data = {};
+        data[f.id] = {
 
-        floors.forEach(f => {
+            name:f.name,
+            count:f.count,
+            max:f.max
+        };
+    });
 
-            data[f.id] = {
+    await set(ref(db,"floors"),data);
 
-                name:f.name,
-                count:f.count,
-                max:f.max
-            };
-        });
-
-        await set(ref(db,"floors"),data);
-
-        await set(
-            ref(db,"meta/checkinsToday"),
-            1284
-        );
-    }
+    await set(
+        ref(db,"meta/checkinsToday"),
+        0
+    );
 }
 
 // ======================================================
@@ -650,8 +643,6 @@ async function processScan(type){
         return;
     }
 
-    // CHECK-IN
-
     if(type === "checkin"){
 
         if(floorObj.count >= floorObj.max){
@@ -682,8 +673,6 @@ async function processScan(type){
 
         alert("Check-In Successful");
     }
-
-    // CHECK-OUT
 
     else{
 
@@ -744,8 +733,6 @@ function emergencyMode(alertObj){
         "#ef4444"
     );
 
-    // FLOOR BREAKDOWN
-
     let floorBreakdown = floors.map(f => {
 
         let status =
@@ -759,8 +746,6 @@ ${f.name} : ${f.count}/${f.max} (${status.text})
 `;
 
     }).join("\n");
-
-    // EMAIL ALERT
 
     emailjs.send(
 
@@ -789,13 +774,12 @@ ${f.name} : ${f.count}/${f.max} (${status.text})
         `${alertObj.name} Alert Sent`
     );
 }
+
 // ======================================================
 // BUTTON EVENTS
 // ======================================================
 
 function buttonEvents(){
-
-    // CHECK-IN
 
     document.getElementById(
         "checkin-btn"
@@ -806,8 +790,6 @@ function buttonEvents(){
 
     });
 
-    // CHECK-OUT
-
     document.getElementById(
         "checkout-btn"
     ).addEventListener("click",
@@ -816,8 +798,6 @@ function buttonEvents(){
         processScan("checkout");
 
     });
-
-    // SIMULATE
 
     document.getElementById(
         "sim-btn"
@@ -832,8 +812,6 @@ function buttonEvents(){
         processScan(randomType);
 
     });
-
-    // CLEAR EMERGENCY
 
     document.getElementById(
         "danger-alert-btn"
@@ -866,8 +844,6 @@ function buttonEvents(){
             "#10b981"
         );
     });
-
-    // CLEAR FEED
 
     document.getElementById(
         "clear-feed-btn"
