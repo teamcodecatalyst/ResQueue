@@ -517,7 +517,7 @@ function updateGlobalMetrics(){
 }
 
 // ======================================================
-// FIREBASE SEED
+// FIREBASE RESET
 // ======================================================
 
 async function seedDatabase(){
@@ -529,7 +529,7 @@ async function seedDatabase(){
         data[f.id] = {
 
             name:f.name,
-            count:f.count,
+            count:0,
             max:f.max
         };
     });
